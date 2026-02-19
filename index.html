@@ -1044,44 +1044,87 @@
         </section>
     </div>
 
-    <script>
-        // 부드러운 스크롤 이동
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-
-    <script>
-        function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            const icon = document.querySelector('.mobile-menu-btn i');
-            
-            // active 클래스 토글
-            sidebar.classList.toggle('active');
-            
-            // 아이콘 모양 변경 (삼선 <-> X)
-            if (sidebar.classList.contains('active')) {
-                icon.className = 'fas fa-times';
-            } else {
-                icon.className = 'fas fa-bars';
-            }
+<style>
+    /* 1. 모바일 환경 강제 정의 (모든 기존 스타일 무시) */
+    @media (max-width: 900px) {
+        /* 사이드바를 상단바로 강제 고정 */
+        #sidebar.sidebar {
+            width: 100% !important;
+            height: 65px !important;
+            min-height: 65px !important;
+            max-height: 65px !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            overflow: hidden !important;
+            z-index: 99999 !important;
+            padding: 10px 20px !important;
+            display: block !important;
         }
 
-        // 메뉴 클릭 시 자동으로 닫기 (모바일 전용)
-        document.querySelectorAll('.sidebar a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 900) {
-                    document.getElementById('sidebar').classList.remove('active');
-                    document.querySelector('.mobile-menu-btn i').className = 'fas fa-bars';
-                }
-            });
-        });
-    </script>
+        /* 메뉴가 열렸을 때 (Active) */
+        #sidebar.sidebar.active {
+            max-height: 100vh !important;
+            height: 100vh !important;
+            overflow-y: auto !important;
+        }
+
+        /* 버튼 강제 노출 및 위치 고정 */
+        .mobile-menu-btn {
+            display: block !important;
+            position: absolute !important;
+            right: 20px !important;
+            top: 15px !important;
+            z-index: 100000 !important;
+        }
+
+        /* 본문 내용이 상단바에 가려지지 않게 강제 여백 */
+        .content {
+            margin-left: 0 !important;
+            padding-top: 80px !important;
+            width: 100% !important;
+        }
+
+        /* 메뉴 리스트 제어 */
+        #sidebar ul {
+            display: none !important;
+            margin-top: 50px !important;
+        }
+        #sidebar.active ul {
+            display: block !important;
+        }
+        
+        /* 그리드 깨짐 방지 */
+        .grid-2, .card-grid, .markdown-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+</style>
+
+<script>
+    // 클릭 시 'active' 클래스만 확실히 토글
+    function toggleMenu() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('active');
+        
+        const icon = document.querySelector('.mobile-menu-btn i');
+        if (sidebar.classList.contains('active')) {
+            icon.setAttribute('class', 'fas fa-times');
+        } else {
+            icon.setAttribute('class', 'fas fa-bars');
+        }
+    }
+
+    // 메뉴 링크 클릭 시 메뉴판 닫기
+    document.querySelectorAll('#sidebar a').forEach(link => {
+        link.onclick = function() {
+            if (window.innerWidth <= 900) {
+                document.getElementById('sidebar').classList.remove('active');
+                document.querySelector('.mobile-menu-btn i').setAttribute('class', 'fas fa-bars');
+            }
+        };
+    });
+</script>
 
 </body>
 </html>
