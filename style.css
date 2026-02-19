@@ -56,54 +56,62 @@ body {
 }
 
 
-/* 모바일 및 태블릿 대응 (화면 너비 768px 이하) */
+/* 햄버거 버튼 스타일 (기본적으로는 숨김) */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
 @media (max-width: 768px) {
-    /* 1. 사이드바: 고정을 풀고 상단 메뉴 형태로 변경 */
+    /* 1. 사이드바 헤더 정렬 */
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .mobile-menu-btn {
+        display: block; /* 모바일에서만 노출 */
+    }
+
+    /* 2. 사이드바 초기 상태 (닫힘) */
     .sidebar {
         width: 100% !important;
         height: auto !important;
-        position: relative !important; /* 본문과 겹치지 않게 고정 해제 */
-        padding: 1.5rem 1rem !important;
-        overflow-y: visible !important; /* 스크롤바 제거 */
-    }
-
-    /* 2. 메인 콘텐츠: 왼쪽 여백을 없애서 화면 꽉 차게 변경 */
-    .content {
-        margin-left: 0 !important;
+        position: fixed !important;
+        top: 0;
+        left: 0;
         padding: 1rem !important;
+        max-height: 60px; /* 로고 영역만 보이게 */
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
     }
 
-    /* 3. 로고 및 메뉴 정렬 변경 */
-    .logo {
-        margin-bottom: 1rem !important;
-        justify-content: center; /* 로고 중앙 정렬 */
+    /* 3. 메뉴가 열렸을 때 상태 */
+    .sidebar.active {
+        max-height: 100vh; /* 화면 꽉 차게 확장 */
+        overflow-y: auto;
     }
 
     .sidebar ul {
-        display: flex;
-        flex-wrap: wrap; /* 메뉴가 많으면 다음 줄로 넘어가게 */
-        justify-content: center;
-        gap: 5px;
-        padding: 0;
+        display: none; /* 닫혔을 땐 메뉴 숨김 */
+        flex-direction: column;
+        margin-top: 1rem;
     }
 
-    .sidebar li {
-        margin-bottom: 0 !important;
+    .sidebar.active ul {
+        display: flex; /* 열리면 메뉴 노출 */
     }
 
-    .sidebar a {
-        font-size: 0.8rem !important;
-        padding: 8px 10px !important;
-    }
-
-    /* 4. 그리드 레이아웃: 모든 카드를 한 줄로 정렬 */
-    .markdown-grid, .card-grid, .grid-2 {
-        grid-template-columns: 1fr !important;
-        display: block !important; /* 그리드 대신 블록으로 안정화 */
-    }
-    
-    .card {
-        margin-bottom: 1.5rem;
+    /* 4. 본문 영역 */
+    .content {
+        margin-left: 0 !important;
+        padding-top: 80px !important; /* 상단 바 높이만큼 여백 */
     }
 }
 
