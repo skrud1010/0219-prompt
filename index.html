@@ -45,6 +45,8 @@
         }
         .sidebar a:hover { background: rgba(255,255,255,0.1); color: white; transform: translateX(5px); }
 
+        
+
         /* 메인 콘텐츠 */
         .content { margin-left: var(--sidebar-w); flex: 1; padding-bottom: 5rem; }
 
@@ -108,8 +110,13 @@
 </head>
 <body>
 
-    <nav class="sidebar">
-        <div class="logo"><i class="fas fa-ship"></i> Trade AI</div>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo"><i class="fas fa-ship"></i> Trade AI</div>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
         <ul>
             <li><a href="#section1">1. 프롬프트 세 가지 유형</a></li>
             <li><a href="#section2">2. 제로/원/퓨샷 프롬프팅</a></li>
@@ -1048,22 +1055,41 @@
         });
     </script>
 
-<script>
-    function toggleMenu() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('active');
-    }
-
-    // 메뉴 클릭 시 자동으로 닫히게 설정 (편의성)
-    document.querySelectorAll('.sidebar a').forEach(link => {
-        link.addEventListener('click', () => {
+    <script>
+        // 1. 햄버거 메뉴 토글 함수
+        function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('active');
+            const btnIcon = document.querySelector('.mobile-menu-btn i');
+            
+            sidebar.classList.toggle('active');
+            
+            if (sidebar.classList.contains('active')) {
+                btnIcon.classList.replace('fa-bars', 'fa-times');
+            } else {
+                btnIcon.classList.replace('fa-times', 'fa-bars');
             }
+        }
+
+        // 2. 부드러운 스크롤 및 모바일 메뉴 자동 닫기
+        document.querySelectorAll('.sidebar a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                // 메뉴 닫기 (모바일일 때만)
+                if (window.innerWidth <= 900) {
+                    const sidebar = document.getElementById('sidebar');
+                    sidebar.classList.remove('active');
+                    document.querySelector('.mobile-menu-btn i').classList.replace('fa-times', 'fa-bars');
+                }
+
+                // 해당 섹션으로 이동
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 </html>

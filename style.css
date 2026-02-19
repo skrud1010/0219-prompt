@@ -15,9 +15,11 @@ body {
     background-color: var(--bg);
     color: var(--text);
     line-height: 1.7;
+    display: flex; /* 컨테이너 역할을 바디에서 수행 */
+    scroll-behavior: smooth;
 }
 
-.container { display: flex; }
+.container { display: flex; width: 100%; }
 
 /* 사이드바 */
 .sidebar {
@@ -28,12 +30,20 @@ body {
     padding: 2rem 1rem;
     position: fixed;
     overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
 }
 
 .logo {
     font-size: 1.4rem;
     font-weight: 800;
-    margin-bottom: 2.5rem;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -55,8 +65,7 @@ body {
     color: white;
 }
 
-
-/* 햄버거 버튼 스타일 (기본적으로는 숨김) */
+/* 햄버거 버튼 스타일 (기본적으로 숨김) */
 .mobile-menu-btn {
     display: none;
     background: none;
@@ -66,60 +75,13 @@ body {
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
-    /* 1. 사이드바 헤더 정렬 */
-    .sidebar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-    }
-
-    .mobile-menu-btn {
-        display: block; /* 모바일에서만 노출 */
-    }
-
-    /* 2. 사이드바 초기 상태 (닫힘) */
-    .sidebar {
-        width: 100% !important;
-        height: auto !important;
-        position: fixed !important;
-        top: 0;
-        left: 0;
-        padding: 1rem !important;
-        max-height: 60px; /* 로고 영역만 보이게 */
-        overflow: hidden;
-        transition: max-height 0.3s ease-in-out;
-    }
-
-    /* 3. 메뉴가 열렸을 때 상태 */
-    .sidebar.active {
-        max-height: 100vh; /* 화면 꽉 차게 확장 */
-        overflow-y: auto;
-    }
-
-    .sidebar ul {
-        display: none; /* 닫혔을 땐 메뉴 숨김 */
-        flex-direction: column;
-        margin-top: 1rem;
-    }
-
-    .sidebar.active ul {
-        display: flex; /* 열리면 메뉴 노출 */
-    }
-
-    /* 4. 본문 영역 */
-    .content {
-        margin-left: 0 !important;
-        padding-top: 80px !important; /* 상단 바 높이만큼 여백 */
-    }
-}
-
 /* 메인 콘텐츠 */
 .content {
     margin-left: var(--sidebar-w);
     padding: 4rem;
     max-width: 1100px;
+    flex: 1;
+    transition: all 0.3s ease-in-out;
 }
 
 header {
@@ -206,44 +168,26 @@ h2 {
 .yellow { background: #fffbe6; border-left: 6px solid #fcc419; }
 .green { background: #f4fce3; border-left: 6px solid #94d82d; }
 
-/* 반응형 */
-@media (max-width: 900px) {
-    .sidebar { width: 100%; height: auto; position: relative; }
-    .content { margin-left: 0; padding: 2rem; }
-    .container { flex-direction: column; }
-    .grid-2 { grid-template-columns: 1fr; }
-}
-
 /* 섹션 4 전용 그리드 설정 */
 .markdown-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 한 줄에 3개씩 균등 배분 */
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    align-items: stretch; /* 모든 카드의 높이를 동일하게 맞춤 */
+    align-items: stretch;
 }
 
-/* 카드 내부 구성 요소 정렬 */
 .markdown-grid .card {
     display: flex;
     flex-direction: column;
-    height: 100%; /* 부모 그리드 높이에 맞춤 */
+    height: 100%;
 }
 
 .markdown-grid .card .example {
-    flex-grow: 1; /* 예시 박스가 남는 공간을 모두 채워 하단 라인 정렬 */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 텍스트가 적어도 중앙에 위치해 보기 좋게 함 */
+    justify-content: center;
 }
-
-/* 모바일 화면 대응 */
-@media (max-width: 1024px) {
-    .markdown-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-    .markdown-grid { grid-template-columns: 1fr; }
-}
-
 
 /* 표현 강도 테이블 스타일 */
 .intensity-table {
@@ -270,4 +214,64 @@ h2 {
 
 .intensity-table tr:hover {
     background-color: #fcfcfc;
+}
+
+/* ==========================================
+   📱 모바일 반응형 및 햄버거 메뉴 통합 수정
+   ========================================== */
+@media (max-width: 768px) {
+    .container { flex-direction: column; }
+
+    .mobile-menu-btn {
+        display: block; /* 모바일 전용 버튼 활성화 */
+    }
+
+    .sidebar {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 65px; /* 기본 상단바 높이 */
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        padding: 1rem !important;
+        overflow: hidden; /* 메뉴 숨김 상태 */
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* 햄버거 메뉴가 활성화 되었을 때 */
+    .sidebar.active {
+        max-height: 100vh;
+        overflow-y: auto;
+    }
+
+    .sidebar-header {
+        margin-bottom: 1.5rem;
+        width: 100%;
+    }
+
+    .sidebar ul {
+        display: none; /* 평소엔 숨김 */
+        flex-direction: column;
+    }
+
+    .sidebar.active ul {
+        display: flex; /* 활성화 시 노출 */
+    }
+
+    .content {
+        margin-left: 0 !important;
+        padding: 1.5rem;
+        padding-top: 90px !important; /* 상단바 높이만큼 여백 */
+    }
+
+    .grid-2, .markdown-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    header h1 { font-size: 1.8rem; }
+}
+
+/* 중간 사양 태블릿 대응 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .markdown-grid { grid-template-columns: repeat(2, 1fr); }
 }
