@@ -168,4 +168,133 @@
         section { padding: 0 1.2rem; margin-bottom: 4rem; }
         .grid-2, .card-grid, .markdown-grid { grid-template-columns: 1fr !important; }
     }
+
+    .generator-box {
+        margin-top: 2rem;
+        padding: 25px;
+        background: #f0f7ff;
+        border: 2px solid var(--sub-blue);
+        border-radius: 15px;
+    }
+    .gen-input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+    .gen-btn {
+        width: 100%;
+        padding: 12px;
+        background: var(--sub-blue);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .gen-btn:hover { background: var(--primary); }
+    .gen-result {
+        display: none;
+        margin-top: 15px;
+        padding: 15px;
+        background: #1e293b;
+        color: #f8fafc;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        white-space: pre-wrap;
+        position: relative;
+    }
+    .copy-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255,255,255,0.2);
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+
+
+
+    /* 생성기 전체 컨테이너 */
+    .generator-box {
+        margin: 2rem 0;
+        padding: 30px;
+        background: #ffffff;
+        border-radius: 20px;
+        border: 1px solid #eef2f6;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    /* 제목 스타일 (아이콘 삭제 및 텍스트 변경) */
+    .generator-box h4 {
+        font-size: 1.05rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+        font-weight: 800;
+    }
+
+    /* 입력창 그룹 */
+    .gen-input-group {
+        display: flex;
+        gap: 12px;
+    }
+
+    .gen-input {
+        flex: 1;
+        padding: 12px 18px;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 10px;
+        font-size: 0.9rem;
+        transition: all 0.3s;
+        outline: none;
+    }
+
+    .gen-input:focus {
+        border-color: var(--sub-blue);
+        background: #f8fbff;
+    }
+
+    /* 생성 버튼 (심플 & 모던 디자인) */
+    .gen-btn {
+        padding: 0 25px;
+        background: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+        white-space: nowrap;
+    }
+
+    .gen-btn:hover {
+        background: var(--sub-blue);
+        transform: translateY(-1px);
+    }
+
+    .gen-btn:active {
+        transform: translateY(0);
+    }
+
+    /* AI 결과창 */
+    .gen-result {
+        display: none;
+        margin-top: 20px;
+        padding: 20px;
+        background: #1e293b;
+        color: #f8fafc;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        white-space: pre-wrap;
+        border-left: 4px solid var(--sub-blue);
+    }
 </style>
